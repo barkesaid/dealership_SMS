@@ -32,15 +32,19 @@ $printdate= date_format($formatdate,"d");
 //select the reg number using the chasis
 $regno= getRegNosusingChasis($chasis);
 
+$initialbalance=getBalance($chasis);
+
 //now fetch the total installment the client has paid
 $totalinstallmentspaid= allInstallmentPaid($chasis);
+
+$previousinstallment = getpreviousinstallment($chasis);
 
 
 //select the balance the client was to pay
 $balanceremaining=getBalanceRemaining($chasis,$totalinstallmentspaid);
 
 $recipients = $from;
-$message = "Hello $cname, your installment balance=Ksh.$balanceremaining and is due on $printdate of this month.\nKindly make your installment payment through this Mpesa number:0700138215(Mpesa name: KenyaMotorsLtd). Or at Equity Bank account no:1452147896,use your car registration number ($regno) as a reference.";
+$message = "Hello $cname, your initial installment balance was KSh.$initialbalance.You have paid a total installment of KSh.$totalinstallmentspaid,your previous installment payment was of Ksh.$previousinstallment and your balance is=Ksh.$balanceremaining which is due on $printdate of this month.\nKindly make your installment payment through this Mpesa Paybill Or Equity Bank;use your car registration number ($regno) as a reference.";
             
 $gateway    = new AfricasTalkingGateway($username, $apikey);
 try 
