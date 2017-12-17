@@ -1,6 +1,7 @@
 <?php 
   require_once ('db_connect.php'); 
 
+// fetch the client idno using their captured phone number 
 function getClientbyId($phone)
 { 		 global $conn;
 		$query1="SELECT idno FROM customer WHERE phoneno=$phone";
@@ -87,7 +88,7 @@ function getRegNosusingChasis($chasis)
 
 			
 		}
-
+// get all installments paid
 function allInstallmentPaid($chasis){
 			global $conn;
 			$query="select SUM(amountpaid) from installments where chasis='$chasis'";
@@ -107,7 +108,27 @@ function allInstallmentPaid($chasis){
 
 
 		}
+		
+		// start test
+		function getBalance($chasis){
+		 global $conn;
+		$query1="SELECT balance FROM soldcars WHERE chasis='$chasis'";
+		$result1=$conn->query($query1);
+		if(!$result1){	echo "".$conn->error; }
+		else {
+			//echo "Fetched successfully";
+			while ($row1 = $result1->fetch_assoc()) {                                   
+		         $initialbalance = $row1['balance']; 
+		        return $initialbalance;
+		}
 
+}
+}
+		
+		
+		// end test
+
+// getinstallment balance
 function getBalanceRemaining($chasis,$totalinstallmentspaid){
 		 global $conn;
 		$query1="SELECT balance FROM soldcars WHERE chasis='$chasis'";
@@ -129,6 +150,28 @@ function getBalanceRemaining($chasis,$totalinstallmentspaid){
 
 }
 
+//start test
+//get previous amount paid
+function getpreviousinstallment($chasis) {
+	global $conn;
+		$query2="SELECT amountpaid FROM installments where chasis='$chasis' ORDER BY datepaid DESC LIMIT 1";
+		$result2=$conn->query($query2);
+		if(!$result2){	echo "".$conn->error; }
+		else {
+			//echo "Fetched successfully";
+			while ($row2 = $result2->fetch_assoc()) {                                   
+		         $previousinstallment = $row2['amountpaid']; 
+		         //echo"this is your initial balance:\t" ; echo $previousinstallment;  
+		         }
+		       
+		        return $previousinstallment;
 
+		}
+	
+}
+
+
+
+//end test
 
 ?>
